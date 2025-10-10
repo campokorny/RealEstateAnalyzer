@@ -1,0 +1,43 @@
+# =========================================
+# Python cache and virtual environment
+# =========================================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+*.py.class
+*.log
+*.sqlite
+*.db
+*.db-journal
+.venv/
+env/
+venv/
+
+# =========================================
+# IDE / Editor settings
+# =========================================
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# =========================================
+# OS-specific files
+# =========================================
+.DS_Store
+Thumbs.db
+
+# =========================================
+# Project-specific exclusions
+# =========================================
+# Data directory (local property data, test runs, or backups)
+data/
+
+# =========================================
+# Build and packaging
+# =========================================
+build/
+dist/
+*.egg-info/
