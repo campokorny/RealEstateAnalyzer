@@ -34,6 +34,8 @@ Thumbs.db
 # =========================================
 # Data directory (local property data, test runs, or backups)
 data/
+# Info directory (Contains info and formats used by the developer)
+info/
 
 # =========================================
 # Build and packaging
