@@ -254,7 +254,7 @@ with st.expander("⚙️ Manage Properties", expanded=False):
 # =========================================
 # Section 4: In-Depth Property Analysis (with What-If)
 # =========================================
-with st.expander("🔍 In-Depth Property Analysis 2", expanded=True):
+with st.expander("🔍 In-Depth Property Analysis", expanded=True):
     props = fetch_all_properties()
 
     if props:
