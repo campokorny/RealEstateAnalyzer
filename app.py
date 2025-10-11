@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from models import Property, Income, Expense
-from db import create_tables, insert_property, fetch_all_properties, get_connection
+from models.property_models import Property, Income, Expense
+from services.db import create_tables, insert_property, fetch_all_properties, get_connection
 
 st.set_page_config(page_title="Real Estate Analyzer", layout="wide")
 st.title("🏠 Real Estate Investment Analyzer")

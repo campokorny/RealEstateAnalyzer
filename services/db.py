@@ -1,9 +1,8 @@
 import sqlite3
 from pathlib import Path
-from models import Property, Income, Expense
+from models.property_models import Property, Income, Expense
 
-DB_PATH = Path("data/real_estate.db")
-
+DB_PATH = Path(__file__).parent.parent / "data" / "real_estate.db"
 
 def get_connection():
     """Return a SQLite connection (auto-creates data folder if needed)."""
