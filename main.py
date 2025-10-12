@@ -1,5 +1,5 @@
-from models import Property, Income, Expense
-from db import create_tables, insert_property, fetch_all_properties
+from models.property_models import Property, Income, Expense
+from services.db import create_tables, insert_property, fetch_all_properties
 
 def main():
     create_tables()
