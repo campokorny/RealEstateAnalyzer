@@ -1,7 +1,7 @@
 import streamlit as st
 from services.db import fetch_all_properties, delete_property
 
-st.title("⚙️ Manage Properties")
+st.subheader("⚙️ Manage Properties")
 
 props = fetch_all_properties()
 if props:

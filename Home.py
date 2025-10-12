@@ -10,7 +10,7 @@ st.title("🏠 Real Estate Investment Analyzer")
 
 create_tables()
 
-st.title("📊 Portfolio Overview")
+st.subheader("📊 Portfolio Overview")
 
 props = fetch_all_properties()
 
@@ -46,5 +46,4 @@ if props:
 else:
     st.info("No properties found yet. Add one below!")
 
-st.sidebar.divider()
 st.sidebar.info("Real Estate Analyzer • by Cameron Pokorny")

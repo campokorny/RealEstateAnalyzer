@@ -6,7 +6,7 @@ from models.property_models import Income, Expense, Property
 from services.calculations import calculate_metrics, project_long_term
 from services.db import fetch_all_properties, update_property_in_db
 
-st.title("🔍 In-Depth Property Analysis")
+st.subheader("🔍 In-Depth Property Analysis")
 
 props = fetch_all_properties()
 

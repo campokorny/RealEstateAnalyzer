@@ -3,7 +3,7 @@ import streamlit as st
 from models.property_models import Income, Expense, Property
 from services.db import insert_property
 
-st.title("➕ Add a New Property")
+st.subheader("➕ Add a New Property")
 
 with st.form("property_form"):
     address = st.text_input("Address")
