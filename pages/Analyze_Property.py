@@ -47,6 +47,7 @@ if props:
         use_loan = c3.checkbox("Use Loan?", value=prop.loan_interest_rate > 0)
         loan_interest_rate = c4.number_input("Loan Interest Rate (%)", value=prop.loan_interest_rate * 100 if use_loan else 0.0)
         loan_years = st.number_input("Loan Term (years)", value=prop.loan_years if use_loan else 0, step=1, min_value=0, max_value=40)
+        is_portfolio_property = st.checkbox("Portfolio Property?", value=prop.is_portfolio_property)
 
         # Income & Expenses
         st.markdown("#### Monthly Income & Expenses")
@@ -94,6 +95,7 @@ if props:
             down_payment,
             loan_interest_rate / 100 if use_loan else 0.0,
             loan_years if use_loan else 0,
+            is_portfolio_property,
             income,
             expenses
         )

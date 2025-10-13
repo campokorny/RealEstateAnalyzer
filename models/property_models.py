@@ -41,5 +41,6 @@ class Property:
     down_payment: float
     loan_interest_rate: float
     loan_years: int
+    is_portfolio_property: bool
     income: Income
     expenses: Expense

@@ -19,6 +19,7 @@ if props:
         down_payment = st.number_input("Down Payment", value=prop.down_payment, min_value=0.0)
         loan_interest_rate = st.number_input("Loan Interest Rate (%)", value=prop.loan_interest_rate * 100)
         loan_years = st.number_input("Loan Term (years)", value=prop.loan_years, min_value=0, max_value=40)
+        is_portfolio_property = st.checkbox("Portfolio Property?", value=prop.is_portfolio_property)
 
         # Income
         rent_income = st.number_input("Rent Income", value=prop.income.rent_income)
@@ -55,7 +56,7 @@ if props:
             )
             updated_property = Property(
                 prop.id, prop.address, purchase_price, down_payment,
-                loan_interest_rate / 100, loan_years, updated_income, updated_expenses
+                loan_interest_rate / 100, loan_years, is_portfolio_property, updated_income, updated_expenses
             )
 
             # Update in database
