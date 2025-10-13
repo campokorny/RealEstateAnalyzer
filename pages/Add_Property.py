@@ -11,6 +11,7 @@ with st.form("property_form"):
     down_payment = st.number_input("Down Payment", min_value=0.0)
     loan_interest_rate = st.number_input("Loan Interest Rate (%)", min_value=0.0)
     loan_years = st.number_input("Loan Term (years)", min_value=1, max_value=40)
+    is_portfolio_property = st.checkbox("Portfolio Property?", value=False)
 
     st.subheader("Income (Monthly)")
     rent_income = st.number_input("Rent", min_value=0.0)
@@ -44,9 +45,9 @@ with st.form("property_form"):
             vacancy_rate, repairs, capEx, property_management, mortgage, other_expense
         )
         prop = Property(
-            address, purchase_price, down_payment,
-            loan_interest_rate / 100, loan_years, income, expenses
-        )
+            None, address, purchase_price, down_payment,
+            loan_interest_rate / 100, loan_years, is_portfolio_property, income, expenses)
+
         insert_property(prop)
         st.success(f"✅ {address} added successfully!")
 

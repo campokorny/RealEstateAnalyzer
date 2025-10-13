@@ -16,11 +16,11 @@ def update_property_in_db(prop: Property):
     c = conn.cursor()
     c.execute("""
         UPDATE properties SET
-            purchase_price=?, down_payment=?, loan_interest_rate=?, loan_years=?
+            purchase_price=?, down_payment=?, loan_interest_rate=?, loan_years=?, is_portfolio_property=?
         WHERE id=?
     """, (
         prop.purchase_price, prop.down_payment, prop.loan_interest_rate, prop.loan_years,
-        prop.id
+        prop.is_portfolio_property, prop.id
     ))
 
     c.execute("""
@@ -69,7 +69,8 @@ def create_tables():
             purchase_price REAL,
             down_payment REAL,
             loan_interest_rate REAL,
-            loan_years INTEGER
+            loan_years INTEGER,
+            is_portfolio_property BOOLEAN
         );
     """)
 
@@ -120,14 +121,16 @@ def insert_property(property_obj: Property):
 
     # Insert property
     c.execute("""
-        INSERT INTO properties (address, purchase_price, down_payment, loan_interest_rate, loan_years)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO properties (address, purchase_price, down_payment, loan_interest_rate, loan_years, 
+        is_portfolio_property)
+        VALUES (?, ?, ?, ?, ?, ?)
     """, (
         property_obj.address,
         property_obj.purchase_price,
         property_obj.down_payment,
         property_obj.loan_interest_rate,
-        property_obj.loan_years
+        property_obj.loan_years,
+        property_obj.is_portfolio_property
     ))
 
     property_id = c.lastrowid
@@ -184,7 +187,8 @@ def fetch_all_properties():
 
     c.execute("""
         SELECT 
-            p.id, p.address, p.purchase_price, p.down_payment, p.loan_interest_rate, p.loan_years,
+            p.id, p.address, p.purchase_price, p.down_payment, p.loan_interest_rate, p.loan_years, 
+            p.is_portfolio_property,
             i.rent_income, i.laundry_income, i.other_income,
             e.tax_expense, e.insurance_expense, e.electric_expense, e.water_sewer_expense,
             e.garbage_expense, e.gas_expense, e.hoa_expense, e.lawn_care_expense,
@@ -202,7 +206,7 @@ def fetch_all_properties():
     properties = []
     for row in rows:
         (
-            _id, address, purchase_price, down_payment, loan_interest_rate, loan_years,
+            _id, address, purchase_price, down_payment, loan_interest_rate, loan_years, is_portfolio_property,
             rent_income, laundry_income, other_income,
             tax_expense, insurance_expense, electric_expense, water_sewer_expense,
             garbage_expense, gas_expense, hoa_expense, lawn_care_expense,
@@ -241,6 +245,7 @@ def fetch_all_properties():
             down_payment=down_payment,
             loan_interest_rate=loan_interest_rate,
             loan_years=loan_years,
+            is_portfolio_property=is_portfolio_property,
             income=income,
             expenses=expenses
         )
