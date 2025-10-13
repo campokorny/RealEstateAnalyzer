@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 
 from services.calculations import calculate_metrics
-from services.db import create_tables, fetch_all_properties
+from services.db import create_tables, fetch_all_properties, fetch_portfolio_properties
 
 st.set_page_config(page_title="Real Estate Analyzer", layout="wide")
 st.title("🏠 Real Estate Investment Analyzer")
@@ -12,7 +12,7 @@ create_tables()
 
 st.subheader("📊 Portfolio Overview")
 
-props = fetch_all_properties()
+props = fetch_portfolio_properties()
 
 if props:
     data = []

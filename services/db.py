@@ -253,3 +253,78 @@ def fetch_all_properties():
         properties.append(prop)
 
     return properties
+
+
+def fetch_portfolio_properties():
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("""
+        SELECT 
+            p.id, p.address, p.purchase_price, p.down_payment, p.loan_interest_rate, p.loan_years, 
+            p.is_portfolio_property,
+            i.rent_income, i.laundry_income, i.other_income,
+            e.tax_expense, e.insurance_expense, e.electric_expense, e.water_sewer_expense,
+            e.garbage_expense, e.gas_expense, e.hoa_expense, e.lawn_care_expense,
+            e.snow_removal_expense, e.vacancy_rate, e.repairs, e.capEx,
+            e.property_management, e.mortgage, e.other_expense
+        FROM properties p
+        JOIN incomes i ON p.id = i.property_id
+        JOIN expenses e ON p.id = e.property_id
+        WHERE p.is_portfolio_property = 1
+        ORDER BY p.id;
+    """)
+    rows = c.fetchall()
+    conn.close()
+
+    properties = []
+    for row in rows:
+        (
+            _id, address, purchase_price, down_payment, loan_interest_rate, loan_years, is_portfolio_property,
+            rent_income, laundry_income, other_income,
+            tax_expense, insurance_expense, electric_expense, water_sewer_expense,
+            garbage_expense, gas_expense, hoa_expense, lawn_care_expense,
+            snow_removal_expense, vacancy_rate, repairs, capEx,
+            property_management, mortgage, other_expense
+        ) = row
+
+        income = Income(
+            rent_income=rent_income,
+            laundry_income=laundry_income,
+            other_income=other_income
+        )
+
+        expenses = Expense(
+            tax_expense=tax_expense,
+            insurance_expense=insurance_expense,
+            electric_expense=electric_expense,
+            water_sewer_expense=water_sewer_expense,
+            garbage_expense=garbage_expense,
+            gas_expense=gas_expense,
+            hoa_expense=hoa_expense,
+            lawn_care_expense=lawn_care_expense,
+            snow_removal_expense=snow_removal_expense,
+            vacancy_rate=vacancy_rate,
+            repairs=repairs,
+            capEx=capEx,
+            property_management=property_management,
+            mortgage=mortgage,
+            other_expense=other_expense
+        )
+
+        prop = Property(
+            id=_id,
+            address=address,
+            purchase_price=purchase_price,
+            down_payment=down_payment,
+            loan_interest_rate=loan_interest_rate,
+            loan_years=loan_years,
+            is_portfolio_property=is_portfolio_property,
+            income=income,
+            expenses=expenses
+        )
+
+        properties.append(prop)
+
+    return properties
+
+
