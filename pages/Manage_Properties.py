@@ -61,13 +61,13 @@ if props:
             # Update in database
             update_property_in_db(updated_property)
             st.success(f"✅ {prop.address} updated successfully!")
-            st.experimental_rerun()  # Refresh page to show updated values
+            st.rerun()  # Refresh page to show updated values
 
     # --- Delete button ---
     if st.button("🗑️ Delete Selected Property"):
         delete_property(selected_address)
         st.warning(f"{selected_address} deleted.")
-        st.experimental_rerun()
+        st.rerun()
 
 else:
     st.info("No properties available to manage.")

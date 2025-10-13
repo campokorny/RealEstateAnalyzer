@@ -131,7 +131,7 @@ if props:
         # Save button
         if st.button("💾 Save Changes to Property"):
             update_property_in_db(prop_temp)
-            st.success(f"{prop.address} updated successfully!")
             st.rerun()
+
 else:
     st.info("Add a property first to view in-depth analysis.")
