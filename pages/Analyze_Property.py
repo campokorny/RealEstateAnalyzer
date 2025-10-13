@@ -88,6 +88,7 @@ if props:
             mortgage, other_expense
         )
         prop_temp = Property(
+            prop.id,
             prop.address,
             purchase_price,
             down_payment,

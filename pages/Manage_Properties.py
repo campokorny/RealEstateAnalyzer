@@ -6,8 +6,9 @@ st.subheader("⚙️ Manage Properties")
 
 props = fetch_all_properties()
 if props:
-    selected_address = st.selectbox("Select a property", [p.address for p in props])
-    prop = next(p for p in props if p.address == selected_address)
+    prop_map = {p.address: p for p in props} # creates a map where the key is address and the value is Property object
+    selected_address = st.selectbox("Select a property", list(prop_map.keys())) # lists addresses as dropdown options
+    prop = prop_map[selected_address]
 
     # --- Edit form ---
     with st.form("edit_property_form"):
@@ -53,7 +54,7 @@ if props:
                 vacancy_rate, repairs, capEx, property_management, mortgage, other_expense
             )
             updated_property = Property(
-                prop.address, purchase_price, down_payment,
+                prop.id, prop.address, purchase_price, down_payment,
                 loan_interest_rate / 100, loan_years, updated_income, updated_expenses
             )
 
