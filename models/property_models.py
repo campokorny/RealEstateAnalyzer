@@ -35,6 +35,7 @@ class Income:
 
 @dataclass
 class Property:
+    id: int | None # SQL creates the ID, we will then read and use that ID when retrieving properties
     address: str
     purchase_price: float
     down_payment: float

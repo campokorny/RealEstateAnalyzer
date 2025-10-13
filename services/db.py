@@ -4,10 +4,10 @@ from models.property_models import Property, Income, Expense
 
 DB_PATH = Path(__file__).parent.parent / "data" / "real_estate.db"
 
-def delete_property(address: str):
+def delete_property(property_id: int):
     conn = get_connection()
     c = conn.cursor()
-    c.execute("DELETE FROM properties WHERE address = ?", (address,))
+    c.execute("DELETE FROM properties WHERE id = ?", (property_id,))
     conn.commit()
     conn.close()
 
@@ -16,22 +16,37 @@ def update_property_in_db(prop: Property):
     c = conn.cursor()
     c.execute("""
         UPDATE properties SET
-            purchase_price=?, down_payment=?, loan_interest_rate=?, loan_years=?,
-            rent_income=?, laundry_income=?, other_income=?,
+            purchase_price=?, down_payment=?, loan_interest_rate=?, loan_years=?
+        WHERE id=?
+    """, (
+        prop.purchase_price, prop.down_payment, prop.loan_interest_rate, prop.loan_years,
+        prop.id
+    ))
+
+    c.execute("""
+            UPDATE incomes SET
+                rent_income=?, laundry_income=?, other_income=?
+            WHERE id=?
+        """, (
+        prop.income.rent_income, prop.income.laundry_income, prop.income.other_income,
+        prop.id
+    ))
+
+    c.execute("""
+            UPDATE expenses SET
             tax_expense=?, insurance_expense=?, electric_expense=?, water_sewer_expense=?,
             garbage_expense=?, gas_expense=?, hoa_expense=?, lawn_care_expense=?, snow_removal_expense=?,
             vacancy_rate=?, repairs=?, capEx=?, property_management=?, mortgage=?, other_expense=?
-        WHERE address=?
-    """, (
-        prop.purchase_price, prop.down_payment, prop.loan_interest_rate, prop.loan_years,
-        prop.income.rent_income, prop.income.laundry_income, prop.income.other_income,
+            WHERE id=?
+        """, (
         prop.expenses.tax_expense, prop.expenses.insurance_expense, prop.expenses.electric_expense,
         prop.expenses.water_sewer_expense, prop.expenses.garbage_expense, prop.expenses.gas_expense,
         prop.expenses.hoa_expense, prop.expenses.lawn_care_expense, prop.expenses.snow_removal_expense,
         prop.expenses.vacancy_rate, prop.expenses.repairs, prop.expenses.capEx,
         prop.expenses.property_management, prop.expenses.mortgage, prop.expenses.other_expense,
-        prop.address
+        prop.id
     ))
+
     conn.commit()
     conn.close()
 
@@ -220,6 +235,7 @@ def fetch_all_properties():
         )
 
         prop = Property(
+            id = _id,
             address=address,
             purchase_price=purchase_price,
             down_payment=down_payment,
