@@ -1,6 +1,7 @@
 import sqlite3
 from pathlib import Path
 from models.property_models import Property, Income, Expense
+from services.schema import PROPERTY_FIELDS, INCOME_FIELDS, EXPENSE_FIELDS
 
 DB_PATH = Path(__file__).parent.parent / "data" / "real_estate.db"
 
@@ -55,63 +56,17 @@ def get_connection():
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
     return sqlite3.connect(DB_PATH)
 
+def create_table(conn, table_name: str, fields: dict):
+    columns = ", ".join([f"{col} {dtype}" for col, dtype in fields.items()])
+    conn.execute(f"CREATE TABLE IF NOT EXISTS {table_name} ({columns});")
+    conn.commit()
 
 def create_tables():
     """Create tables for properties, incomes, and expenses."""
-    conn = get_connection()
-    c = conn.cursor()
-
-    # Properties table
-    c.execute("""
-        CREATE TABLE IF NOT EXISTS properties (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            address TEXT NOT NULL,
-            purchase_price REAL,
-            down_payment REAL,
-            loan_interest_rate REAL,
-            loan_years INTEGER,
-            is_portfolio_property BOOLEAN
-        );
-    """)
-
-    # Income table (1-to-1 per property)
-    c.execute("""
-        CREATE TABLE IF NOT EXISTS incomes (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            property_id INTEGER NOT NULL,
-            rent_income REAL,
-            laundry_income REAL,
-            other_income REAL,
-            FOREIGN KEY (property_id) REFERENCES properties (id) ON DELETE CASCADE
-        );
-    """)
-
-    # Expense table (1-to-1 per property)
-    c.execute("""
-        CREATE TABLE IF NOT EXISTS expenses (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            property_id INTEGER NOT NULL,
-            tax_expense REAL,
-            insurance_expense REAL,
-            electric_expense REAL,
-            water_sewer_expense REAL,
-            garbage_expense REAL,
-            gas_expense REAL,
-            hoa_expense REAL,
-            lawn_care_expense REAL,
-            snow_removal_expense REAL,
-            vacancy_rate REAL,
-            repairs REAL,
-            capEx REAL,
-            property_management REAL,
-            mortgage REAL,
-            other_expense REAL,
-            FOREIGN KEY (property_id) REFERENCES properties (id) ON DELETE CASCADE
-        );
-    """)
-
-    conn.commit()
-    conn.close()
+    with get_connection() as conn:
+        create_table(conn, "properties", PROPERTY_FIELDS)
+        create_table(conn, "incomes", INCOME_FIELDS)
+        create_table(conn, "expenses", EXPENSE_FIELDS)
 
 
 def insert_property(property_obj: Property):
