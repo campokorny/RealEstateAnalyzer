@@ -6,8 +6,8 @@ PROPERTY_FIELDS = {
     "loan_interest_rate": "REAL",
     "loan_years": "INTEGER",
     "is_portfolio_property": "BOOLEAN",
-    "financing_type": "TEXT",   # "cash" or "financed"
-    "property_type": "TEXT"     # "rental" or "flip"
+    # "financing_type": "TEXT",   # "cash" or "financed"
+    # "property_type": "TEXT"     # "rental" or "flip"
 }
 
 INCOME_FIELDS = {

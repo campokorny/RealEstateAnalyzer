@@ -19,6 +19,8 @@ def main():
         down_payment=50000,
         loan_interest_rate=0.07,
         loan_years=30,
+        # financing_type="financed",
+        # property_type="rental",
         income=income,
         expenses=expenses
     )

@@ -1,46 +1,57 @@
-from dataclasses import dataclass
+from sqlalchemy import Column, Integer, String, Float, Boolean, ForeignKey
+from sqlalchemy.orm import relationship, declarative_base
 
-@dataclass
-class Expense:
-    """
-    Expenses are listed per month
-    """
-    tax_expense: float
-    insurance_expense: float
-    electric_expense: float
-    water_sewer_expense: float
-    garbage_expense: float
-    gas_expense: float
-    hoa_expense: float
-    lawn_care_expense: float
-    snow_removal_expense: float
-    vacancy_rate: float
-    repairs: float
-    capEx: float
-    property_management: float
-    mortgage: float
-    other_expense: float
+Base = declarative_base()
 
+class Property(Base):
+    __tablename__ = "properties"
+
+    id = Column(Integer, primary_key=True)
+    address = Column(String, nullable=False)
+    purchase_price = Column(Float)
+    down_payment = Column(Float)
+    loan_interest_rate = Column(Float)
+    loan_years = Column(Integer)
+    is_portfolio_property = Column(Boolean, default=False)
+    # financing_type: TEXT
+    # property_type: TEXT
+
+    # Relationships
+    income = relationship("Income", uselist=False, back_populates="property", cascade="all, delete-orphan")
+    expenses = relationship("Expense", uselist=False, back_populates="property", cascade="all, delete-orphan")
 
 
-@dataclass
-class Income:
-    """
-    Income is listed per month
-    """
-    rent_income: float
-    laundry_income: float
-    other_income: float
+class Income(Base):
+    __tablename__ = "incomes"
+
+    id = Column(Integer, primary_key=True)
+    property_id = Column(Integer, ForeignKey("properties.id"))
+    rent_income = Column(Float, default=0)
+    laundry_income = Column(Float, default=0)
+    other_income = Column(Float, default=0)
+
+    property = relationship("Property", back_populates="income")
 
 
-@dataclass
-class Property:
-    id: int | None # SQL creates the ID, we will then read and use that ID when retrieving properties
-    address: str
-    purchase_price: float
-    down_payment: float
-    loan_interest_rate: float
-    loan_years: int
-    is_portfolio_property: bool
-    income: Income
-    expenses: Expense
+class Expense(Base):
+    __tablename__ = "expenses"
+
+    id = Column(Integer, primary_key=True)
+    property_id = Column(Integer, ForeignKey("properties.id"))
+    tax_expense = Column(Float, default=0)
+    insurance_expense = Column(Float, default=0)
+    electric_expense = Column(Float, default=0)
+    water_sewer_expense = Column(Float, default=0)
+    garbage_expense= Column(Float, default=0)
+    gas_expense= Column(Float, default=0)
+    hoa_expense= Column(Float, default=0)
+    lawn_care_expense= Column(Float, default=0)
+    snow_removal_expense= Column(Float, default=0)
+    vacancy_rate= Column(Float, default=0)
+    repairs= Column(Float, default=0)
+    capEx= Column(Float, default=0)
+    property_management= Column(Float, default=0)
+    mortgage= Column(Float, default=0)
+    other_expense= Column(Float, default=0)
+
+    property = relationship("Property", back_populates="expenses")
