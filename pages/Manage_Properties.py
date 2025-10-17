@@ -48,15 +48,18 @@ if props:
         submitted = st.form_submit_button("💾 Save Changes")
         if submitted:
             # Build updated Property object
-            updated_income = Income(rent_income, laundry_income, other_income)
+            updated_income = Income(rent_income=rent_income, laundry_income=laundry_income, other_income=other_income)
             updated_expenses = Expense(
-                tax_expense, insurance_expense, electric_expense, water_sewer_expense,
-                garbage_expense, gas_expense, hoa_expense, lawn_care_expense, snow_removal_expense,
-                vacancy_rate, repairs, capEx, property_management, mortgage, other_expense
+                tax_expense=tax_expense, insurance_expense=insurance_expense, electric_expense=electric_expense,
+                water_sewer_expense=water_sewer_expense, garbage_expense=garbage_expense, gas_expense=gas_expense,
+                hoa_expense=hoa_expense, lawn_care_expense=lawn_care_expense, snow_removal_expense=snow_removal_expense,
+                vacancy_rate=vacancy_rate, repairs=repairs, capEx=capEx,
+                property_management=property_management, mortgage=mortgage, other_expense=other_expense
             )
             updated_property = Property(
-                prop.id, prop.address, purchase_price, down_payment,
-                loan_interest_rate / 100, loan_years, is_portfolio_property, updated_income, updated_expenses
+                id=prop.id, address=prop.address, purchase_price=purchase_price, down_payment=down_payment,
+                loan_interest_rate=loan_interest_rate / 100, loan_years=loan_years,
+                is_portfolio_property=is_portfolio_property, income=updated_income, expenses=updated_expenses
             )
 
             # Update in database

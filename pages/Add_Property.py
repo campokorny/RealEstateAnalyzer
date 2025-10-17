@@ -38,15 +38,25 @@ with st.form("property_form"):
     submitted = st.form_submit_button("💾 Save Property")
 
     if submitted and address:
-        income = Income(rent_income, laundry_income, other_income)
+        income = Income(rent_income=rent_income, laundry_income=laundry_income, other_income=other_income)
         expenses = Expense(
-            tax_expense, insurance_expense, electric_expense, water_sewer_expense,
-            garbage_expense, gas_expense, hoa_expense, lawn_care_expense, snow_removal_expense,
-            vacancy_rate, repairs, capEx, property_management, mortgage, other_expense
+            tax_expense=tax_expense, insurance_expense=insurance_expense, electric_expense=electric_expense,
+            water_sewer_expense=water_sewer_expense, garbage_expense=garbage_expense, gas_expense=gas_expense,
+            hoa_expense=hoa_expense, lawn_care_expense=lawn_care_expense, snow_removal_expense=snow_removal_expense,
+            vacancy_rate=vacancy_rate, repairs=repairs, capEx=capEx, property_management=property_management,
+            mortgage=mortgage, other_expense=other_expense
         )
         prop = Property(
-            None, address, purchase_price, down_payment,
-            loan_interest_rate / 100, loan_years, is_portfolio_property, income, expenses)
+            id=None,
+            address=address,
+            purchase_price=purchase_price,
+            down_payment=down_payment,
+            loan_interest_rate=loan_interest_rate / 100,
+            loan_years=loan_years,
+            is_portfolio_property=is_portfolio_property,
+            income=income,
+            expenses=expenses
+        )
 
         insert_property(prop)
         st.success(f"✅ {address} added successfully!")
