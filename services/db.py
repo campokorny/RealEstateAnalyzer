@@ -37,39 +37,12 @@ def insert_property(property_obj: Property):
 
 
 def update_property_in_db(prop: Property):
-    """Update an existing property and its relationships."""
+    """Update or merge a detached ORM property."""
     with get_session() as session:
         try:
-            existing = session.get(Property, prop.id)
-            if not existing:
-                raise ValueError(f"Property with ID {prop.id} not found.")
-
-            # Update property attributes
-            for attr in [
-                "address", "purchase_price", "down_payment",
-                "loan_interest_rate", "loan_years", "is_portfolio_property"
-            ]:
-                setattr(existing, attr, getattr(prop, attr))
-
-            # Update income
-            if prop.income:
-                existing.income.rent_income = prop.income.rent_income
-                existing.income.laundry_income = prop.income.laundry_income
-                existing.income.other_income = prop.income.other_income
-
-            # Update expenses
-            if prop.expenses:
-                for field in [
-                    "tax_expense", "insurance_expense", "electric_expense", "water_sewer_expense",
-                    "garbage_expense", "gas_expense", "hoa_expense", "lawn_care_expense",
-                    "snow_removal_expense", "vacancy_rate", "repairs", "capEx",
-                    "property_management", "mortgage", "other_expense"
-                ]:
-                    setattr(existing.expenses, field, getattr(prop.expenses, field))
-
+            session.merge(prop)  # Reattach detached object and update DB
             session.commit()
             print(f"✅ Property '{prop.address}' updated successfully.")
-
         except Exception as e:
             session.rollback()
             print(f"❌ Failed to update property: {e}")

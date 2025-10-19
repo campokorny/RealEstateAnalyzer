@@ -47,25 +47,38 @@ if props:
         # Submit button
         submitted = st.form_submit_button("💾 Save Changes")
         if submitted:
-            # Build updated Property object
-            updated_income = Income(rent_income=rent_income, laundry_income=laundry_income, other_income=other_income)
-            updated_expenses = Expense(
-                tax_expense=tax_expense, insurance_expense=insurance_expense, electric_expense=electric_expense,
-                water_sewer_expense=water_sewer_expense, garbage_expense=garbage_expense, gas_expense=gas_expense,
-                hoa_expense=hoa_expense, lawn_care_expense=lawn_care_expense, snow_removal_expense=snow_removal_expense,
-                vacancy_rate=vacancy_rate, repairs=repairs, capEx=capEx,
-                property_management=property_management, mortgage=mortgage, other_expense=other_expense
-            )
-            updated_property = Property(
-                id=prop.id, address=prop.address, purchase_price=purchase_price, down_payment=down_payment,
-                loan_interest_rate=loan_interest_rate / 100, loan_years=loan_years,
-                is_portfolio_property=is_portfolio_property, income=updated_income, expenses=updated_expenses
-            )
+            # Update existing ORM object directly
+            prop.purchase_price = purchase_price
+            prop.down_payment = down_payment
+            prop.loan_interest_rate = loan_interest_rate / 100
+            prop.loan_years = loan_years
+            prop.is_portfolio_property = is_portfolio_property
 
-            # Update in database
-            update_property_in_db(updated_property)
+            # Update income and expenses directly
+            prop.income.rent_income = rent_income
+            prop.income.laundry_income = laundry_income
+            prop.income.other_income = other_income
+
+            prop.expenses.tax_expense = tax_expense
+            prop.expenses.insurance_expense = insurance_expense
+            prop.expenses.electric_expense = electric_expense
+            prop.expenses.water_sewer_expense = water_sewer_expense
+            prop.expenses.garbage_expense = garbage_expense
+            prop.expenses.gas_expense = gas_expense
+            prop.expenses.hoa_expense = hoa_expense
+            prop.expenses.lawn_care_expense = lawn_care_expense
+            prop.expenses.snow_removal_expense = snow_removal_expense
+            prop.expenses.vacancy_rate = vacancy_rate
+            prop.expenses.repairs = repairs
+            prop.expenses.capEx = capEx
+            prop.expenses.property_management = property_management
+            prop.expenses.mortgage = mortgage
+            prop.expenses.other_expense = other_expense
+
+            # Save using ORM session
+            update_property_in_db(prop)
             st.success(f"✅ {prop.address} updated successfully!")
-            st.rerun()  # Refresh page to show updated values
+            st.rerun()
 
     # --- Delete button ---
     if st.button("🗑️ Delete Selected Property"):
